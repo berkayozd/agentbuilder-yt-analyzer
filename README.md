@@ -53,11 +53,9 @@ The workflow consists of a 5-step linear process designed for data integrity:
 
 4. Set state → Stores the cleaned JSON object into the global variable json_report_object.
 
-5. Content Strategy Analyst (Agent)
+5. Content Strategy Analyst (Agent) → Performs analysis and generates the final, professional content strategy report.
 
-📝 CRITICAL LOGIC: Reads data from state, and if incomplete, triggers its internal File Search Tool (the fallback mechanism) to read the full 100-video context. Performs analysis and generates the final Markdown report.
-
-Outputs the final, professional content strategy report.
+📝 CRITICAL LOGIC: Reads data from state, and if incomplete, triggers its internal File Search Tool (the fallback mechanism) to read the full 100-video context. 
 
 📸 Visual Documentation
 
