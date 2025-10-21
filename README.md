@@ -15,15 +15,15 @@ This project successfully addresses the core challenge of large-scale RAG (Retri
 
 📂 File/Folder
 
-* data_collector.py -> Python script to fetch the full 100-video trending dataset using the YouTube Data API.
+* data_collector.py → Python script to fetch the full 100-video trending dataset using the YouTube Data API.
 
-* example.env -> Template for environment variables (copy to .env for use).
+* example.env → Template for environment variables (copy to .env for use).
 
-* trending_videos_data.json -> The collected raw JSON dataset (Uploaded to Agent Builder's Vector Store).
+* trending_videos_data.json → The collected raw JSON dataset (Uploaded to Agent Builder's Vector Store).
 
-* docs/ -> Stores source prompts, final report text, and CEL logic examples.
+* docs/ → Stores source prompts, final report text, and CEL logic examples.
 
-* screenshots/ -> Visual documentation of the entire workflow and final report.
+* screenshots/ → Visual documentation of the entire workflow and final report.
 
 🛠️ Local Setup (Data Collection Layer)
 
@@ -43,26 +43,19 @@ python data_collector.py
 
 🔁 Agent Builder Workflow Implementation (5 Steps)
 
-The workflow consists of a 4-step linear process designed for data integrity:
+The workflow consists of a 5-step linear process designed for data integrity:
 
-1-Start 
-Define state variables if needed
+1. Start → Define state variables if needed
 
-2-File Search
+2. File Search → Initial retrieval of the large JSON file from the Vector Store.
 
-Initial retrieval of the large JSON file from the Vector Store.
+3. DataCleanup → Uses Transform (CEL) to isolate the raw JSON string from metadata.
 
-3-DataCleanup
+4. Set state → Stores the cleaned JSON object into the global variable json_report_object.
 
-Uses Transform (CEL) to isolate the raw JSON string from metadata.
+5. Content Strategy Analyst (Agent)
 
-4-Set state
-
-Stores the cleaned JSON object into the global variable json_report_object.
-
-5-Content Strategy Analyst (Agent)
-
-CRITICAL LOGIC: Reads data from state, and if incomplete, triggers its internal File Search Tool (the fallback mechanism) to read the full 100-video context. Performs analysis and generates the final Markdown report.
+📝 CRITICAL LOGIC: Reads data from state, and if incomplete, triggers its internal File Search Tool (the fallback mechanism) to read the full 100-video context. Performs analysis and generates the final Markdown report.
 
 Outputs the final, professional content strategy report.
 
@@ -70,8 +63,3 @@ Outputs the final, professional content strategy report.
 
 Check the /screenshots folder for a step-by-step visual guide:
 
-workflow.png: The complete 5-node linear workflow.
-
-vector_storage.png: Proof of the uploaded trending_videos_data.json file.
-
-report-1.png - report-4.png: The final, clean, and highly structured Markdown report output.
