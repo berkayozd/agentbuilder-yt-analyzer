@@ -4,88 +4,74 @@ This project showcases an advanced AI workflow built using OpenAI Agent Builder 
 
 ✨ Technical Highlights
 
-This project addresses and successfully overcomes key limitations of developing complex agents on platforms like Agent Builder:
+This project successfully addresses the core challenge of large-scale RAG (Retrieval-Augmented Generation) in Agent Builder by solving the Context Window Truncation issue:
 
-Context Window Mitigation (CRITICAL): The workflow successfully processes a large 100-video JSON dataset, proving that the Agent can bypass the platform's security-enforced context limits by intelligently invoking the File Search Tool on demand.
+1. Context Window Mitigation (CRITICAL): The final Analyst Agent, upon realizing the input data is incomplete, intelligently triggers its internal File Search Tool to retrieve and process the full 100-video dataset. This showcases self-correction and advanced tool usage logic.
 
-Full Control Data Flow: Implementation of Set State and Transform nodes ensures clean data (free from API wrappers) is fed to the Large Language Model (LLM).
+2. Full Control Data Flow: Implementation of Transform and Set State nodes ensures clean, structured data is fed to the Large Language Model (LLM).
 
-Structured to Visual Transformation: The final Agent handles a two-stage task: first, analyzing the raw data, and second, converting that complex analysis into a visually appealing, production-ready Markdown Report (no raw JSON output).
+3. Visual Output: The final Agent generates a professional, aesthetically pleasing Markdown Report by filtering out platform-enforced file citation icons and raw JSON.
 
-🛠️ Project Structure and Setup
 
-The repository is divided into two primary sections: the Python Data Layer and the Agent Builder Documentation.
+📂 File/Folder
 
-File/Folder
+* data_collector.py -> Python script to fetch the full 100-video trending dataset using the YouTube Data API.
 
-Purpose
+* example.env -> Template for environment variables (copy to .env for use).
 
-data_collector.py
+* trending_videos_data.json -> The collected raw JSON dataset (Uploaded to Agent Builder's Vector Store).
 
-Python script to fetch the full 100-video trending dataset using the YouTube Data API.
+* docs/ -> Stores source prompts, final report text, and CEL logic examples.
 
-.env
+* screenshots/ -> Visual documentation of the entire workflow and final report.
 
-Stores the confidential YOUTUBE_API_KEY (Ignored by Git).
+🛠️ Local Setup (Data Collection Layer)
 
-trending_videos_data.json
+Clone this repository and navigate to the directory.
 
-The collected raw JSON dataset (Uploaded to Agent Builder's Vector Store).
+Install Python dependencies: 
+```
+pip install google-api-python-client requests python-dotenv
+```
+Configure API Key: Copy example.env to a new file named .env and paste your YouTube Data API Key.
 
-docs/
+Generate Data: 
+Run the collector script to fetch the data. The output is saved to trending_videos_data.json.
+```
+python data_collector.py
+```
 
-Stores the source prompts and final report text.
+🔁 Agent Builder Workflow Implementation (5 Steps)
 
-screenshots/
+The workflow consists of a 4-step linear process designed for data integrity:
 
-Visual documentation of the workflow, vector store, and final report output.
+1-Start 
+Define state variables if needed
 
-1. Local Setup
+2-File Search
 
-Clone this repository: git clone git@github.com:<YOUR_USERNAME>/agentbuilder-yt-analyzer.git
+Initial retrieval of the large JSON file from the Vector Store.
 
-Install Python dependencies: pip install google-api-python-client requests python-dotenv
+3-DataCleanup
 
-Create a .env file and add your YouTube API Key.
+Uses Transform (CEL) to isolate the raw JSON string from metadata.
 
-Run the data collector to fetch the data: python data_collector.py
-
-2. Agent Builder Workflow Implementation
-
-The workflow is a 5-step linear process designed for data integrity:
-
-Step
-
-Node
-
-CEL/Logic Key
-
-1.
-
-File Search
-
-Retrieves trending_videos_data.json from the Vector Store.
-
-2.
-
-DataCleanup
-
-Uses Transform to isolate the raw JSON string from the File Search metadata.
-
-3.
-
-Set state
+4-Set state
 
 Stores the cleaned JSON object into the global variable json_report_object.
 
-4.
+5-Content Strategy Analyst (Agent)
 
-Content Strategy Analyst (Agent)
-
-CRITICAL LOGIC: Reads data from state, and if truncated, triggers its internal File Search Tool to retrieve the full 100-video context. Performs analysis and generates the final Markdown report.
-
-5.
-
-End
+CRITICAL LOGIC: Reads data from state, and if incomplete, triggers its internal File Search Tool (the fallback mechanism) to read the full 100-video context. Performs analysis and generates the final Markdown report.
 
 Outputs the final, professional content strategy report.
+
+📸 Visual Documentation
+
+Check the /screenshots folder for a step-by-step visual guide:
+
+workflow.png: The complete 5-node linear workflow.
+
+vector_storage.png: Proof of the uploaded trending_videos_data.json file.
+
+report-1.png - report-4.png: The final, clean, and highly structured Markdown report output.
